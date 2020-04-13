@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import pl.jaceksysiak.demo.entity.Currency;
+import pl.jaceksysiak.demo.entity.Market;
 import pl.jaceksysiak.demo.entity.ids.CurrencyId;
 
 public class Application_CreateData {
@@ -15,6 +16,7 @@ public class Application_CreateData {
 		SessionFactory factory = new Configuration()
 								.configure("hibernate.cfg.xml")
 								.addAnnotatedClass(Currency.class)
+								.addAnnotatedClass(Market.class)
 								.buildSessionFactory();
 		
 		// create session 1
@@ -26,27 +28,25 @@ public class Application_CreateData {
 			
 			//Creating the Object 
 			Currency currency = new Currency();
-			currency.setCountryName("United States");
-			currency.setName("Dollar");
-			currency.setSymbol("$");
+			currency.setCountryName("United Kingdom");
+			currency.setName("Pound");
+			currency.setSymbol("Pound Sign");
+			
+			Market market = new Market();
+			market.setMarketName("London Stock Exchange");
+			market.setCurrency(currency);
 			
 			//Saving the Object to DB		
-			session.persist(currency);
+			session.persist(market);
+			
+			Market dbMarket = (Market) session.get(Market.class, market.getMarketId());
+			System.out.println(dbMarket.getCurrency().getName());
+		    
 			
 			// commit transaction
 			session.getTransaction().commit();
 			
-			
-			
-			// create session 2
-			Session session2 = factory.getCurrentSession();
-		    session2.beginTransaction();
-		    
-			Currency dbCurrency = (Currency) session2.get(Currency.class, new CurrencyId("Dollar", "United States"));
-			System.out.println(dbCurrency.getName());
-			
-			session2.getTransaction().commit();
-		    
+
 		    
 		}
 		finally {
