@@ -6,7 +6,6 @@ import org.hibernate.cfg.Configuration;
 
 import pl.jaceksysiak.demo.entity.Currency;
 import pl.jaceksysiak.demo.entity.Market;
-import pl.jaceksysiak.demo.entity.ids.CurrencyId;
 
 public class Application_CreateData {
 
